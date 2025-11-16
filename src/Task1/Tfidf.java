@@ -89,5 +89,47 @@ public class Tfidf {
         return dotProduct / (Math.sqrt(mag1)* Math.sqrt(mag2));
     }
 
+    public static void main(String[] args) {
+        // Assume you already have these two documents created elsewhere
+        HashTable doc1 = YourClassName.doc1;
+        HashTable doc2 = YourClassName.doc2;
+
+        // Add both docs to the corpus
+        ArrayList<HashTable> allDocs = new ArrayList<>();
+        allDocs.add(doc1);
+        allDocs.add(doc2);
+
+        // Create Tfidf instance
+        Tfidf tfidf = new Tfidf(allDocs);
+
+        // Calculate TF-IDF for both documents
+        HashTable doc1Tfidf = tfidf.calculateTfidf(doc1);
+        HashTable doc2Tfidf = tfidf.calculateTfidf(doc2);
+
+        // Create a new HashTable to store combined TF-IDF info
+        HashTable combinedTfidf = new HashTable();
+
+        // Combine all words from both documents
+        ArrayList<String> allWords = new ArrayList<>();
+        allWords.addAll(doc1.getWords());
+        for (String word: doc2.getWords()) {
+            if (!allWords.contains(word)) {
+                allWords.add(word);
+            }
+        }
+
+        // Store average TF-IDF of each word in the combined table
+        for (String word: allWords) {
+            double val1 = doc1Tfidf.getValue(word);
+            double val2 = doc2Tfidf.getValue(word);
+            double avg = (val1 + val2) / 2.0;
+            combinedTfidf.add(word, avg);
+        }
+
+        // Calculate cosine similarity between the two documents
+        double similarity = tfidf.cosineSimilarity(doc1, doc2);
+        System.out.printf("%nCosine Similarity between doc1 and doc2: %.6f%n", similarity);
+    }
+
 
 }
