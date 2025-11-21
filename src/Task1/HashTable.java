@@ -24,7 +24,7 @@ public class HashTable implements java.io.Serializable {
         }
         return false;
     }
-    void add(Object key){
+    public void add(Object key){
         int h = key.hashCode();
         int i = h & (table.length-1);
         for (Node e = table[i]; e != null; e = e.next){
